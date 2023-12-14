@@ -1,6 +1,8 @@
 #include <iostream>
 #include <thread>
+
 #include "BlockQueue.h"
+#include "BlockQueue.cpp"
 
 using namespace std;
 
