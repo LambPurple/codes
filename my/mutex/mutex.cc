@@ -17,7 +17,8 @@ public:
     }
 
     bool isLockedByThisThread(){
-        // return holder_ == C
+        // return holder_ == C?????
+        return false;
     }
 
     void assertLocked(){
