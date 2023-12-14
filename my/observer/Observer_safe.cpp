@@ -2,7 +2,8 @@
 // 采用shared_ptr来控制对象的生命周期
 /*
 问题：
-1.出现莫名奇妙的std::bad_weak_ptr
+1.出现莫名奇妙的std::bad_weak_ptr 
+ 答： 需要公有继承std::enable_shared_from_this<Observer>
 2.如果要将this指针转换成weak_ptr,需要将该类继承
     自std::enable_shared_from_this<T>，调用
     share_from_this()函数可以将this转换成一个weak_ptr的指针
