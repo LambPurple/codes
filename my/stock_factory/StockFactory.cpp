@@ -60,8 +60,9 @@ public:
             ptr.reset(new Stock(s),
                 [weak_this](Stock* stock){
                     if(stock){
-                        //c++中的mutex是可重入的，即在上方加锁后并不影响下方中继续加锁
-                        //不会导致死锁
+                        //C++中的mutex是不可重入（非递归）的
+                        //即不能在同一scope对mtx加两次以上的锁,不然会导致死锁
+                        //C++中的std::recursive_mutex是递归锁，不过多线程编程不建议使用可重入锁
                         auto shared_this = weak_this.lock();
                         if(shared_this){
                             shared_this->removeStock(stock);
@@ -82,7 +83,6 @@ private:
 
 int main(){
     std::shared_ptr<Stock> s1;
-    auto tmp = std::make_shared<Stock>();
     {
         auto factory = std::make_shared<StockFactory>();
         s1 = factory->getObj("lili");
