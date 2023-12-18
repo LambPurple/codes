@@ -7,6 +7,9 @@
 using std::cout,std::endl;
 
 
+/**
+ * @brief 条件变量的简单使用
+ * */ 
 class CountDownLatch{
 public:
     explicit CountDownLatch(int count);
