@@ -53,6 +53,7 @@
         "thread": "cpp",
         "typeinfo": "cpp",
         "list": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "future": "cpp"
     }
 }
