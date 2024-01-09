@@ -24,12 +24,12 @@ int close()
 }
 
 template<typename T>
-class on_scope_exit
+class on_scope_exit_
 {
 public:
-    explicit on_scope_exit(T&& t) : release(forward<T>(t)){} 
+    explicit on_scope_exit_(T&& t) : release(forward<T>(t)){} 
 
-    ~on_scope_exit()
+    ~on_scope_exit_()
     {
         release();
         cout << "deconstruct" << endl;
@@ -39,12 +39,22 @@ private:
     T release;
 };
 
+#define on_scope_exit(args) auto __##arg \
+                            on_scope_exit_<function<decltype(args)>> __##args(args)
+
+
+void func(){
+    close();
+}
+
+
 int main()
 {
+    
     int op = open();
-    auto fun = [&op](){ close(); };
-    // on_scope_exit<decltype(fun)> guard(fun);
-
+    auto x = [&](){close();};
+    // on_scope_exit_<function<decltype(x)>> p(x);
+    // on_scope_exit([](){close();});
     // 使用 op，确保 guard 不会被提前销毁
     std::cout << "Using op: " << op << std::endl;
 }
