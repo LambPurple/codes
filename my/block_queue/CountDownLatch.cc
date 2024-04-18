@@ -29,6 +29,7 @@ CountDownLatch::CountDownLatch(int count) : cnt(count){
 
 }
 
+//倒计时结束，多个线程做的事
 void CountDownLatch::wait(){
     std::unique_lock<std::mutex> lck(mtx);
     while(cnt > 0){
@@ -38,6 +39,7 @@ void CountDownLatch::wait(){
     cout << timer ++ << endl;
 }
 
+//每调用一次，cnt--
 void CountDownLatch::countDown(){
     std::unique_lock<std::mutex> lck(mtx);
     -- cnt;
@@ -46,11 +48,11 @@ void CountDownLatch::countDown(){
 
 int main(){
     CountDownLatch cnt(3);
-    for(int i = 0;i < 5;i ++)
-        std::thread(&CountDownLatch::wait,&cnt).detach();
+    for(int i = 0;i < 5;i ++)//有五个线程在等待倒计时结束
+        std::thread(&CountDownLatch::wait,&cnt).detach();//将成员函数绑定到对象上的方式1
 
-    for(int i = 0;i < 3;i ++)
-        std::thread(std::bind(&CountDownLatch::countDown,&cnt)).detach();
+    for(int i = 0;i < 3;i ++)//调用三次从cnt --
+        std::thread(std::bind(&CountDownLatch::countDown,&cnt)).detach();//方式2
 
     auto x = std::bind(&CountDownLatch::countDown,&cnt);
     while(1);
